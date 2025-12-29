@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Administration - Tirage de Verset</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="admin-body">
+    <div class="container">
+        <!-- Header -->
+        <header class="header admin-header">
+            <div class="logo">
+                <span class="logo-icon">🔐</span>
+                <h1>Administration</h1>
+            </div>
+            <a href="/" class="back-link">← Retour au site</a>
+        </header>
+
+        <!-- Login Section -->
+        <section id="login-section" class="card login-card">
+            <h2>Connexion</h2>
+            <p class="card-description">Connectez-vous pour gérer les versets.</p>
+
+            <form id="login-form" class="login-form">
+                <div class="input-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
+
+            <div id="login-error" class="message error hidden"></div>
+        </section>
+
+        <!-- Admin Dashboard (hidden by default) -->
+        <section id="dashboard-section" class="dashboard hidden">
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-icon">📖</span>
+                    <div class="stat-content">
+                        <span id="total-verses" class="stat-number">0</span>
+                        <span class="stat-label">Versets</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎯</span>
+                    <div class="stat-content">
+                        <span id="total-draws" class="stat-number">0</span>
+                        <span class="stat-label">Tirages</span>
+                    </div>
+                </div>
+                <div class="stat-card logout-card">
+                    <button id="logout-btn" class="btn btn-outline">Déconnexion</button>
+                </div>
+            </div>
+
+            <!-- Add Verse Form -->
+            <div class="card add-verse-card">
+                <h2>Ajouter un verset</h2>
+                <form id="add-verse-form" class="add-verse-form">
+                    <div class="input-group">
+                        <label for="verse-text">Texte du verset</label>
+                        <textarea id="verse-text" name="text" rows="3" required
+                            placeholder="Entrez le texte du verset..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="verse-reference">Référence</label>
+                        <input type="text" id="verse-reference" name="reference" required placeholder="Ex: Jean 3:16">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter le verset</button>
+                </form>
+                <div id="add-message" class="message hidden"></div>
+            </div>
+
+            <!-- Verses List -->
+            <div class="card verses-list-card">
+                <h2>Liste des versets</h2>
+                <div id="verses-list" class="verses-list">
+                    <p class="loading-text">Chargement...</p>
+                </div>
+            </div>
+
+            <!-- Draws List -->
+            <div class="card draws-list-card">
+                <h2>Liste des tirages</h2>
+                <div id="draws-list" class="verses-list">
+                    <p class="loading-text">Chargement...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Espace d'administration sécurisé</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/static/js/admin.js"></script>
+</body>
+
+</html>

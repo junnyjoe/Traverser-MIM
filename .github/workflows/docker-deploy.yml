@@ -1,0 +1,60 @@
+name: Build and deploy Docker image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-image.outputs.image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        id: build-image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/verset-app:latest
+          platforms: linux/amd64
+
+  optional-deploy-ssh:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: ${{ secrets.DEPLOY_HOST != '' }}
+    steps:
+      - name: Wait a bit for remote to be ready
+        run: sleep 3
+
+      - name: Deploy to remote via SSH
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.DEPLOY_SSH_PORT || '22' }}
+          script: |
+            # Pull latest image and restart container (example using docker-compose or docker)
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/verset-app:latest
+            # Stop existing container if running
+            if docker ps -q --filter "name=verset-app" | grep -q .; then
+              docker rm -f verset-app || true
+            fi
+            # Run container (adjust volume/env as needed)
+            docker run -d --name verset-app -p 80:8000 \
+              -e SECRET_KEY="${{ secrets.DEPLOY_SECRET }}" \
+              --restart unless-stopped \
+              ${{ secrets.DOCKERHUB_USERNAME }}/verset-app:latest

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tirez votre verset biblique unique - Une parole de Dieu spécialement pour vous">
+    <title>Mon verset de l'année</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="/static/images/logo.png" alt="Metamorphoo logo" class="logo-img">
+                <h1>Verset de l'année</h1>
+            </div>
+            <p class="tagline">Recevez une parole unique, spécialement pour vous</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Draw Form Section -->
+            <section id="draw-section" class="card draw-card">
+                <h2>Tirez votre verset</h2>
+                <p class="card-description">
+                    Entrez votre adresse e-mail pour recevoir votre verset biblique personnel.
+                    <br><small>Chaque personne ne peut tirer qu'un seul verset.</small>
+                </p>
+
+                <form id="draw-form" class="draw-form">
+                    <div class="input-group">
+                        <label for="first-name" class="sr-only">Prénom</label>
+                        <input type="text" id="first-name" name="first_name" placeholder="Prénom" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="last-name" class="sr-only">Nom</label>
+                        <input type="text" id="last-name" name="last_name" placeholder="Nom" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email" class="sr-only">Adresse e-mail</label>
+                        <input type="email" id="email" name="email" placeholder="votre@email.com" required
+                            autocomplete="email">
+                        <span class="input-icon">✉️</span>
+                    </div>
+                    <button type="submit" id="submit-btn" class="btn btn-primary">
+                        <span class="btn-text">Tirer mon verset</span>
+                        <span class="btn-loader hidden">
+                            <span class="loader"></span>
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Error Message -->
+                <div id="error-message" class="message error hidden"></div>
+            </section>
+
+            <!-- Verse Display Section (hidden by default) -->
+            <section id="verse-section" class="card verse-card hidden">
+                <div class="verse-header">
+                    <span class="verse-icon">✨</span>
+                    <h2 id="verse-title">Votre Verset</h2>
+                </div>
+
+                <!-- Already drawn notice -->
+                <div id="already-drawn-notice" class="notice hidden">
+                    <span class="notice-icon">ℹ️</span>
+                    <span>Vous avez déjà tiré votre verset. Le voici à nouveau :</span>
+                </div>
+
+                <!-- Poster preview: montre l'affiche avec le verset superposé -->
+                <div id="poster-preview" class="poster-preview hidden">
+                    <img src="/static/images/verse_bg.jpg" alt="Affiche" class="poster-bg">
+                    <div class="poster-overlay">
+                        <blockquote id="poster-verse-text" class="poster-verse-text"></blockquote>
+                        <cite id="poster-verse-ref" class="poster-verse-ref"></cite>
+                    </div>
+                </div>
+
+                <div class="verse-actions">
+                    <button id="download-image-btn" class="btn btn-outline">
+                        Télécharger (image)
+                    </button>
+                    <button id="new-draw-btn" class="btn btn-secondary">
+                        Nouveau tirage (autre email)
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Fait par Metamorphoo International Ministry </p>
+            <a href="/admin" class="admin-link">Administration</a>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

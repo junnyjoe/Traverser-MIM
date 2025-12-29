@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# Database
+*.db
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+*.err
+app_start.log
+app_start.err
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker (optional local files)
+.dockerignore
