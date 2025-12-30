@@ -170,11 +170,11 @@ function wrapText(ctx, text, maxWidth) {
 
 /**
  * Generate an image (PNG) with the background and the displayed verse text, then download it.
- * Uses `/static/images/verse_bg.png` as background (place your provided image there).
+ * Uses `/static/images/verse_bg.jpg` as background.
  */
 async function downloadVerseAsImage() {
     try {
-        const bgUrl = '/static/images/verse_bg.png';
+        const bgUrl = '/static/images/verse_bg.jpg';
 
         // Create image and wait for load
         const img = new Image();
@@ -196,43 +196,45 @@ async function downloadVerseAsImage() {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         // Prepare text
-        // Use poster preview text if standalone elements were removed
         const fullTextRaw = (posterVerseText && posterVerseText.textContent) || (verseText && verseText.textContent) || '';
         const fullText = fullTextRaw ? fullTextRaw.replace(/^"|"$/g, '') : '';
         const reference = (posterVerseRef && posterVerseRef.textContent) || (verseReference && verseReference.textContent) || '';
 
-        // Text box area (leave margins)
+        // Text box area - position text in the middle section (below title, above logo)
         const paddingX = canvas.width * 0.08;
-        const paddingY = canvas.height * 0.15;
         const boxWidth = canvas.width - paddingX * 2;
 
-        // Title / verse font
-        const fontSize = Math.floor(canvas.width / 28); // responsive
-        ctx.fillStyle = '#ffffff';
-        ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-        ctx.lineWidth = Math.max(2, Math.floor(fontSize / 15));
+        // Verse font - white text
+        const fontSize = Math.floor(canvas.width / 24);
         ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
 
+        // Draw verse text in WHITE
         ctx.font = `bold ${fontSize}px Inter, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+        ctx.lineWidth = Math.max(1, Math.floor(fontSize / 20));
+
         const lines = wrapText(ctx, fullText, boxWidth);
 
-        // Draw lines centered vertically
-        const lineHeight = fontSize * 1.4;
-        const totalHeight = lines.length * lineHeight + lineHeight; // + reference
-        let startY = canvas.height / 2 - totalHeight / 2;
+        // Calculate vertical position - center in the middle area of the image
+        const lineHeight = fontSize * 1.5;
+        const totalHeight = lines.length * lineHeight + lineHeight;
+        let startY = canvas.height * 0.45; // Position in middle area
 
         // Draw verse lines
         for (let i = 0; i < lines.length; i++) {
-            const y = startY + i * lineHeight + lineHeight / 2;
-            // stroke then fill for readability
+            const y = startY + i * lineHeight;
             ctx.strokeText(lines[i], canvas.width / 2, y);
             ctx.fillText(lines[i], canvas.width / 2, y);
         }
 
-        // Draw reference below
-        const refFontSize = Math.floor(fontSize * 0.8);
-        ctx.font = `600 ${refFontSize}px Inter, sans-serif`;
-        const refY = startY + lines.length * lineHeight + refFontSize * 1.1;
+        // Draw reference in YELLOW/GOLD color
+        const refFontSize = Math.floor(fontSize * 0.85);
+        ctx.font = `bold ${refFontSize}px Inter, sans-serif`;
+        ctx.fillStyle = '#FFD700'; // Gold color
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+        const refY = startY + lines.length * lineHeight + refFontSize * 0.8;
         ctx.strokeText(reference, canvas.width / 2, refY);
         ctx.fillText(reference, canvas.width / 2, refY);
 
@@ -250,7 +252,7 @@ async function downloadVerseAsImage() {
 
     } catch (err) {
         console.error(err);
-        showError('Impossible de générer l\'image. Vérifiez que le fichier de fond existe dans /static/images/verse_bg.png');
+        showError('Impossible de générer l\'image. Vérifiez que le fichier de fond existe.');
     }
 }
 
@@ -266,7 +268,7 @@ async function drawVerse(email) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 email: email,
                 first_name: (firstNameInput && firstNameInput.value.trim()) || '',
                 last_name: (lastNameInput && lastNameInput.value.trim()) || ''
